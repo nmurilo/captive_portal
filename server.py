@@ -15,11 +15,11 @@ def login():
         print 'login:', request.form['login'], 'password:', request.form['password']
         login_user(request.remote_addr)
         if 'orig_url' in request.args and len(request.args['orig_url']) > 0:
-            return redirect(urllib.unquote(request.args['orig_url']))
+            return redirect(urllib.parse.unquote(request.args['orig_url']))
         else:
             return render_template('login_successful.html')
     else:
-        return render_template('login.html', orig_url=urllib.urlencode({'orig_url': request.args.get('orig_url', '')}))
+        return render_template('login.html', orig_url=urllib.parse.urlencode({'orig_url': request.args.get('orig_url', '')}))
 
 @app.route('/favicon.ico')
 def favicon():
@@ -29,7 +29,7 @@ def favicon():
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
 def catch_all(path):
-    return redirect("http://10.20.0.1/login?" + urllib.urlencode({'orig_url': request.url}))
+    return redirect("http://10.20.0.1/login?" + urllib.parse.urlencode({'orig_url': request.url}))
 
 if __name__ == "__main__":
 #    app.debug = True
